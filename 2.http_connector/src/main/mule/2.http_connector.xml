@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="2.http_connectorFlow" doc:id="e79c6e28-47e5-4ed8-af4b-a733ef658b9e" >
+		<http:listener doc:name="Listener" doc:id="e7074152-8268-4763-a67e-40cb70a27b66" config-ref="HTTP_Listener_config_global" path="/test/*"/>
+		<logger level="INFO" doc:name="Logger" doc:id="9c7d3f4c-415c-44da-8565-3be50a99c13a" message='#["LOG START " ++ flow.name]'/>
+		<set-payload value='#["This is set payload in http connector flow"]' doc:name="Set Payload" doc:id="a1206d90-b348-4c69-bd48-066162a0c244" />
+	</flow>
+	<flow name="PathParam" doc:id="aecd8c43-fa46-49e2-a13e-6104c7ac7006" >
+		<http:listener doc:name="Listener" doc:id="fc518852-cef6-4c09-97f2-c16814a1855b" config-ref="HTTP_Listener_config_global" path="/uriParam/{ID}"/>
+		<logger level="INFO" doc:name="Logger" doc:id="9d708e43-490e-4838-984d-ebfc6343536f" message='#["START LOG " ++ flow.name]'/>
+		<set-payload value='#[attributes.uriParams."ID"]' doc:name="Set Payload" doc:id="e9fc109b-03fa-49bc-ade6-c6d52e027778" />
+	</flow>
+	<flow name="getqueryParams" doc:id="54d8d628-09c1-4f20-bbdf-594f0c2a7dcd" >
+		<http:listener doc:name="Listener" doc:id="b51ef735-c453-4e7e-a597-6fd4bb5c44d6" config-ref="HTTP_Listener_config_global" path="/queryParams"/>
+		<logger level="INFO" doc:name="Logger" doc:id="31ae60e7-f30a-402b-9c7b-896f5105e2b0" message='#["log START"]' />
+		<set-payload doc:name="Set Payload" doc:id="418378e6-c825-427f-9f15-cd5c022f129b" value="#[%dw 2.2&#10;output application/json&#10;---&#10;attributes.queryParams]"/>
+	</flow>
+</mule>
