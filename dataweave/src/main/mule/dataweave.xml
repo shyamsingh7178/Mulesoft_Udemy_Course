@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="dataweaveFlow" doc:id="72720f52-9cee-4a60-a0ba-a4cbd96db937" >
+		<ee:transform doc:name="Transform Message" doc:id="04a56109-7d0d-48de-822f-e4545e31e8a9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+
+output application/json
+---
+{
+	"myVar": ("Hello "++ "World")
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="0ccae372-70b4-4353-8f55-5a06a0ac029f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+var myVar = {
+	"sum" : sum([3,4,5]),
+	"avg" : avg([3,4,5,6])
+}
+output application/json
+---
+
+	myVar
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dataweaveFlow1" doc:id="b4ec2d0a-13e0-45f1-90c9-a9ebfec4a532" >
+		<ee:transform doc:name="Transform Message" doc:id="114187a1-5bd3-42e8-a24d-a2cc0658baba" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+	readUrl("classpath://test.json")
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="571ad5f7-3848-4e14-8fe4-98e93cebe934" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+
+	payload
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
